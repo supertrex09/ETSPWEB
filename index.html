@@ -102,6 +102,23 @@ nav a:hover {
 .news-article {
     margin: 20px 0;
 }
+.genre-button {
+            background-color: #3c2704;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            width: 350px;
+            height: 200px;
+            
+        }
+        .genre-button:hover {
+            background-color: #ffffff;
+        }
+        .genre-list {
+            display: none;
+        }
+
 
 h1, h2, h3 {
     font-family: 'Arial', sans-serif;
@@ -137,34 +154,61 @@ p {
     padding: 100px 0;
     height: 400px;
     font-size: 200px;
-    
-
 }
 
-@media (max-width: 768px) {
-    .book {
-        width: calc(50% - 20px);
-    }
+.menu {
+  position: fixed;
+  width: 250px;
+  height: 100%;
+  background-color: #d1840f;
+  left: -250px;
+  transition: left 0.3s ease-in-out;
 }
 
-@media (max-width: 480px) {
-    .book {
-        width: 100%;
-    }
+.menu ul {
+  list-style: none;
+  padding: 0;
 }
+
+.menu a {
+  color: #000000;
+  font-size: 30px;
+  padding: 15px 20px; 
+  top: 40px;
+}
+
+.menu-button {
+    position: fixed;
+    left: 20px;
+    top: 0px; 
+    cursor: pointer;
+    z-index: 2;
+}
+
+.menu-icon {
+  font-size: 30px;
+}
+
 
     </style>
 </head>
 <body>
+    
     <header>
         <div class="header-container">
-            <h1 style="text-align: center;">Brookes Heaton's Library</h1>
-            <nav>
+            <div class="menu-button">
+                <div class="menu-icon">&#9776;</div>
+              </div>
+              <div class="menu">
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="Login.html">Login</a></li>
                     <li><a href="history.html">History Books</a></li>
                 </ul>
+              </div>
+            <h1 style="text-align: center;">Brookes Heaton's Library</h1>
+            <nav>
+                
             </nav>
         </div>
     </header>
@@ -203,21 +247,81 @@ p {
                     </button>
                 </a>
             </div>
+           
+            
 
             
         </div>
     </section>
     <section class="news">
-        <h2>News</h2>
-        <div class="news-article">
-            <h3>Exciting Library Updates</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin aliquet nulla nec sapien fermentum.</p>
+        <button class="genre-button" onclick="toggleGenres()">Select Genre</button>
+        <div class="genre-list">
+            <button class="genre-button" onclick="showBooks('Fantasy')">Fantasy</button>
+            <button class="genre-button" onclick="showBooks('Biography')">Biography</button>
+            <button class="genre-button" onclick="showBooks('Horror')">Horror</button>
         </div>
-        <div class="news-article">
-            <h3>Upcoming Author Talk</h3>
-            <p>Join us for an engaging talk by renowned author John Doe on his latest book.</p>
+        <div id="recommendations">
         </div>
     </section>
   </section>
+  <script>
+    var genreList = document.querySelector('.genre-list');
+        var recommendationsDiv = document.getElementById('recommendations');
+
+        function toggleGenres() {
+            if (genreList.style.display === 'none') {
+                genreList.style.display = 'block';
+            } else {
+                genreList.style.display = 'none';
+            }
+        }
+        function showBooks(genre) {
+            var recommendations = getRecommendationsForGenre(genre);
+
+            recommendationsDiv.innerHTML = recommendations;
+        }
+        function getRecommendationsForGenre(genre) {
+            var bookRecommendations = {
+                'Fantasy': [
+                    { title: 'Harry Potter', cover: 'harry_potter.jpg', link: 'harry_potter.html' },
+                    { title: 'The Lord of the Rings', cover: 'lotr.jpg', link: 'lotr.html' },
+                ],
+                'Biography': [
+                    { title: 'Steve Jobs', cover: 'steve_jobs.jpg', link: 'steve_jobs.html' },
+                    { title: 'Into the Wild', cover: 'into_the_wild.jpg', link: 'into_the_wild.html' },
+                ],
+                'Horror': [
+                    { title: 'Salem\'s Lot', cover: 'salems_lot.jpg', link: 'salems_lot.html' },
+                    { title: 'Frankenstein', cover: 'frankenstein.jpg', link: 'frankenstein.html' },
+                ],
+            };
+
+            var recommendations = bookRecommendations[genre];
+
+            if (recommendations) {
+                var recommendationButtons = recommendations.map(function (book) {
+                    return `<a href="${book.link}" class="book-button" style="background-image: url('${book.cover}')">${book.title}</a>`;
+                });
+
+                return recommendationButtons.join('');
+            } else {
+                return 'No recommendations available for this genre.';
+            }
+        }
+        const menuButton = document.querySelector('.menu-button');
+        const menu = document.querySelector('.menu');
+
+        menuButton.addEventListener('click', () => {
+            if (menu.style.left === '0px' || menu.style.left === '') {
+                menu.style.left = '-250px';
+            } else {
+                menu.style.left = '0px';
+            }
+        });
+    </script>
 </body>
+</html>
+  </script>
+</body>
+
 </html>
